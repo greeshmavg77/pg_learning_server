@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="39.567" height="39" viewBox="0 0 39.567 39">
+  <g id="djequipment" transform="translate(0.283 -0.5)">
+    <path id="Path_15" data-name="Path 15" d="M38.25,33.75H.75v2.5a2.5,2.5,0,0,0,2.5,2.5h32.5a2.5,2.5,0,0,0,2.5-2.5Z" fill="#f8eeed"/>
+    <path id="Path_16" data-name="Path 16" d="M30.615,23.75H8.385a2.5,2.5,0,0,0-2.12,1.175L.75,33.75h37.5l-5.515-8.825A2.5,2.5,0,0,0,30.615,23.75Z" fill="#f8eeed"/>
+    <path id="Path_17" data-name="Path 17" d="M18.25,28.75h0Z" fill="#f8eeed"/>
+    <path id="Path_18" data-name="Path 18" d="M12,27.5,10.75,30Z" fill="#f8eeed"/>
+    <path id="Path_19" data-name="Path 19" d="M27,27.5,28.25,30Z" fill="#f8eeed"/>
+    <path id="Path_20" data-name="Path 20" d="M19.5,7.5a6.25,6.25,0,1,1-6.25,6.25A6.25,6.25,0,0,1,19.5,7.5Z" fill="#f8eeed"/>
+    <path id="Path_21" data-name="Path 21" d="M29.5,11.25a10,10,0,0,0-20,0" fill="#f8eeed"/>
+    <path id="Path_22" data-name="Path 22" d="M29.5,8.75a5,5,0,0,1,0,10Z" fill="#f8eeed"/>
+    <path id="Path_23" data-name="Path 23" d="M9.5,8.75a5,5,0,0,0,0,10Z" fill="#f8eeed"/>
+    <path id="Path_24" data-name="Path 24" d="M38.25,33.75H.75m37.5,0v2.5a2.5,2.5,0,0,1-2.5,2.5H3.25a2.5,2.5,0,0,1-2.5-2.5v-2.5m37.5,0-5.515-8.825a2.5,2.5,0,0,0-2.12-1.175H8.385a2.5,2.5,0,0,0-2.12,1.175L.75,33.75m17.5-5h2.5M12,27.5,10.75,30M27,27.5,28.25,30M29.5,11.25a10,10,0,0,0-20,0m10-3.75a6.25,6.25,0,1,1-6.25,6.25A6.25,6.25,0,0,1,19.5,7.5Zm10,1.25a5,5,0,0,1,0,10Zm-20,0a5,5,0,0,0,0,10Z" fill="none" stroke="#d74f3f" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+  </g>
+</svg>

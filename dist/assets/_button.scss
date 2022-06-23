@@ -1,0 +1,104 @@
+.btn {
+    padding: 10px 30px;
+    border-radius: 50px;
+    font-size: 14px;
+    &.btn {
+        &-primary {
+            background-color: $theme-color;
+            border-color: $theme-color;
+            // text-transform: uppercase;
+            font-weight: 600;
+            display: inline-flex !important;
+            @extend .xy-center;
+            i {
+                color: #fff;
+            }
+        }
+        &-dark {
+            color: #fff;
+            i {
+                color: #fff;
+                &.flaticon-plus {
+                    transform: translateY(2px);
+                    display: inline-block;
+                }
+            }
+        }
+        &-lg {
+            font-size: 20px;
+            padding: 12px 55px;
+        }
+        &-info {
+            background-color: $theme-color;
+            border-color: $theme-color;
+            color: #fff;
+        }
+        &-n {
+            padding: 0;
+            border: 0;
+            &:hover,
+            &:focus,
+            &:active {
+                background-color: transparent !important;
+                color: $btn-hover-color;
+            }
+        }
+        &-sm {
+            padding: 5px 15px;
+        }
+    }
+    .fi {
+        margin-right: 10px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+    }
+    &:hover,
+    &:focus,
+    &:active {
+        background-color: $btn-hover-color !important;
+        border-color: $btn-hover-color !important;
+        color: #fff;
+        .fi {
+            color: #fff;
+        }
+    }
+    &.btn-google {
+        background-color: #d34836;
+        border-color: #d34836;
+    }
+    &.btn-fb {
+        background-color: #3668b7;
+        border-color: #3668b7;
+    }
+}
+button,
+a.btn {
+    &:hover,
+    &:focus,
+    &:active {
+        box-shadow: none !important;
+        outline: none !important;
+    }
+}
+.top-actions {
+    .btn {
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+.login-wrap {
+    .top-actions {
+        .btn {
+            padding: 0 20px;
+            line-height: 50px;
+            .fi {
+                color: #fff;
+                font-size: 22px;
+                line-height: 16px;
+            }
+        }
+    }
+}

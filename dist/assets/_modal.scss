@@ -1,0 +1,19 @@
+.modal {
+    &-s1 {
+        .modal-body {
+            @extend .scroll-s1;
+        }
+    }
+    &#category-modal {
+        .modal-body {
+            padding: 0;
+        }
+    }
+    .modal-dialog {
+        &.modal-custom {
+            @media (min-width: 576px) {
+                max-width: 600px;
+            }
+        }
+    }
+}
