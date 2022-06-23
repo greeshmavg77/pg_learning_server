@@ -76,11 +76,14 @@ module.exports = {
         var arrayAllObjData = [];
         var query = { strStatus: "N" };
 
-        if (obj.category)
-        query.category = obj.category
+        // if (obj.category)
+        // query.category = obj.category
         
         if (obj.semester)
         query.semester = obj.semester
+
+        if (obj.description)
+        query.description = obj.description
         
 
         var intSkipCount = 0;
@@ -93,7 +96,8 @@ module.exports = {
           $project: {
             id:"$_id",
             semester: "$semester",
-            category:"$category",
+            description: "$description",
+            // category:"$category",
           }
         };
         db.collection(config.COURSE_COLLECTION).find(query).count()
@@ -138,6 +142,9 @@ funGetsubcategoryList: subcategoryList = (obj, db) => {
       if (obj.semester)
       query.semester = obj.semester
 
+      if (obj.description)
+      query.description = obj.description
+
       var intSkipCount = 0;
       var intPageLimit = 0;
       if (obj.intSkipCount)
@@ -148,7 +155,7 @@ funGetsubcategoryList: subcategoryList = (obj, db) => {
         $project: {
           id:"$_id",
           semester: "$semester",
-
+          description: "$description",
         }
       };
       db.collection(config.COURSE_COLLECTION).find(query).count()
@@ -356,5 +363,68 @@ funGetItemList: GetItemList = (obj, db) => {
     });
 
 },  
+//get list by id
+GetListById: ListById = (obj, db) => {
+  console.log("getlist ====", obj)
+  return new Promise((resolve, reject) => {
+    try {
+      var arrayAllObjData = [];
+      var query = { strStatus: "N" };
+
+      // if (obj.category)
+      // query.category = obj.category
+      
+      if (obj.semester)
+      query.semester = obj.semester
+
+      if (obj.description)
+      query.description = obj.description
+      
+
+      var intSkipCount = 0;
+      var intPageLimit = 0;
+      if (obj.intSkipCount)
+      intSkipCount = parseInt(obj.intSkipCount);
+      if (obj.intPageLimit)
+      intPageLimit = parseInt(obj.intPageLimit);
+      var Project = {
+        $project: {
+          id:"$_id",
+          semester: "$semester",
+          description: "$description",
+          // category:"$category",
+        }
+      };
+      db.collection(config.COURSE_COLLECTION).find(query).count()
+        .then((totalPageCount) => {
+          if (totalPageCount) {
+            if (!intPageLimit)
+              intPageLimit = parseInt(totalPageCount);
+            db.collection(config.COURSE_COLLECTION).aggregate([{ $match: query },
+            { $sort: { datCreateDateAndTime: -1 } },
+            { "$skip": intSkipCount }, { "$limit": intPageLimit },
+              Project
+            ]).toArray((err, doc) => {
+              console.log("doc ====", doc)
+              if (err) throw err;
+              if (doc) {
+                var objTotal = { intTotalCount: totalPageCount };
+                            arrayAllObjData.push(doc);
+                            arrayAllObjData.push(objTotal);
+                resolve({ success: true, message: 'Successfully.', data: doc });
+              }
+
+            });
+          } else {
+            resolve({ success: false, message: ' No Data Found', data: arryEmpty });
+          }
+        })
+
+    } catch (e) {
+      throw resolve({ success: false, message: 'System ' + e, data: arryEmpty });
+    }
+  });
+
+},
 }
 

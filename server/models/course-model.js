@@ -157,9 +157,11 @@ funAddNet: AddNet = (obj, db) => {
 funAddCourse: Course = (obj, db) => {
 return new Promise((resolve, reject) => {
         try {
+          
             const newObject = {
-                category:obj.category,
                 semester: obj.semester,
+                description:obj.description,
+                fkIntCategoryId:obj.categoryId,
                 datCreateDateAndTime: new Date(),
                 strStatus: 'N',
             };
@@ -240,7 +242,7 @@ funGetItemList:GetItemList = (obj, db) => {
         try {
             const newObject = {
                 semester: obj.semester,
-  
+                description : obj.description,
                 datCreateDateAndTime: new Date(),
                 strStatus: 'N',
             }
@@ -318,24 +320,51 @@ funAddQuestion: Question = (obj, db) => {
       }
   });
 },
+//get list by idd
+ funGetCourseList:GetCourseList = (obj, db) => {
+    return new Promise((resolve, reject) => {
+        try {
+            const newObject = {
+                semester: obj.semester,
+                description : obj.description,
+                datCreateDateAndTime: new Date(),
+                strStatus: 'id',
+            }
+            db.collection(config.COURSE_COLLECTION).insertOne(newObject, (err, doc) => {
+                if (err) resolve({ success: false, message: 'listing Creation Failed.', data: arryEmpty });
+                else {
+                    resolve({ success: true, message: ' saved successfully.', data: doc.ops });
+                }
   
+            });
+  
+  
+        }
+  
+        catch (e) {
+            throw resolve({ success: false, message: 'System ' + e, data: arryEmpty });
+        }
+    });
+  },
 //subject update
 funUpdateCourse: UpdateCourse = (obj, db) => {
     console.log("funUpdateBookingDetails ---", obj)
     return new Promise((resolve, reject) => {
         try {
 
-            let intCourseId = obj.id;
+            let intcategoryId = obj.id;
 
-            var match = { $match: { _id: ObjectID(intCourseId) } };
+            var match = { $match: { _id: ObjectID(intcategoryId) } };
             db.collection(config.COURSE_COLLECTION).aggregate([match, strQryCount]).toArray().then((response) => {
                 if (response.length) {
                     const newObject = {
-                        courseName: obj.courseName,
-                        semester: obj.semester
+
+                        category: obj.category,
+                        semester: obj.semester,
+                        description: obj.description
                        
                     };
-                    var query = { _id: ObjectID(intCourseId) };
+                    var query = { _id: ObjectID(intcategoryId) };
                     db.collection(config.COURSE_COLLECTION).updateOne(query, { $set: newObject }, (err, doc) => {
                         if (err) resolve({ success: false, message: 'Course Update Failed.', data: arryEmpty });
                         else {
@@ -390,7 +419,7 @@ funUpdateItem: UpdateItem = (obj, db) => {
     return new Promise((resolve, reject) => {
         try {
 
-            let intItemId = obj._id;
+            let intItemId = obj._id;    
 
             var match = { $match: { _id: ObjectID(intItemId) } };
             db.collection(config.ITEM_COLLECTION).aggregate([match, strQryCount]).toArray().then((response) => {

@@ -222,8 +222,8 @@ app.post('/api/course/getQuestionList',(req, res) => {
 
 });
 
-//subject save
-app.post('/api/booking/Subject', (req,res) => {
+//sucategory update
+app.post('/api/course/sucategoryUpdate', (req,res) => {
     try{
         var obj = req.body;
         var strActionType ="UPDATE";
@@ -416,4 +416,25 @@ app.post('/api/course/DeleteItemDetails',(req,res) => {
     }
 
 }); 
+//get list by Id
+app.post('/api/course/GetListById',(req,res) => {
+    console.log("show her -----",req.body)
+    try{
+        var obj = req.body
+        if(!obj){
+            res.json({success: false, message: 'Params missing',data:arryEmpty});
+        } else {
+            COURSEREPORT.GetListById(obj,db).then(( result )=>{
+                if(result && result.success === true) {
+                    res.status(200).json(result)
+                }else {
+                    res.status(200).json(result)
+                }
+            });
+        }
+    }catch (e) {
+        console.log("Error",e);
+        res.status(500).json({success: false, message: "Error:"+e, data:arryEmpty});
+    }
+});
 }
