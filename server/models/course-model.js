@@ -320,7 +320,7 @@ funAddQuestion: Question = (obj, db) => {
       }
   });
 },
-//get list by idd
+//get list by id
  funGetCourseList:GetCourseList = (obj, db) => {
     return new Promise((resolve, reject) => {
         try {
@@ -352,19 +352,18 @@ funUpdateCourse: UpdateCourse = (obj, db) => {
     return new Promise((resolve, reject) => {
         try {
 
-            let intcategoryId = obj.id;
+            let intsemesterId = obj.intsemesterId;
 
-            var match = { $match: { _id: ObjectID(intcategoryId) } };
+            var match = { $match: { _id: ObjectID(intsemesterId) } };
             db.collection(config.COURSE_COLLECTION).aggregate([match, strQryCount]).toArray().then((response) => {
                 if (response.length) {
                     const newObject = {
 
-                        category: obj.category,
                         semester: obj.semester,
                         description: obj.description
                        
                     };
-                    var query = { _id: ObjectID(intcategoryId) };
+                    var query = { _id: ObjectID(intsemesterId) };
                     db.collection(config.COURSE_COLLECTION).updateOne(query, { $set: newObject }, (err, doc) => {
                         if (err) resolve({ success: false, message: 'Course Update Failed.', data: arryEmpty });
                         else {
@@ -412,7 +411,34 @@ funSubject: Subject = (obj, db) => {
         }
     });
 },
+//update material
 
+funUpdatestudymaterial: Updatestudymaterial = (obj, db) => {
+    console.log("funUpdatestudymaterialDetails ---", obj)
+    return new Promise((resolve, reject) => {
+        try {
+            const newObject = {
+
+                semester: obj.semester,
+                subject: obj.subject
+            }
+
+            db.collection(config.MATERIAL_COLLECTION).updateOne(query, { $set: newObject }, (err, doc) => {
+                if (err) resolve({ success: false, message: ' Update Failed.', data: arryEmpty });
+                else {
+                    resolve({ success: true, message: 'updated successfully', data: [doc] });
+                }
+
+            });
+
+        }
+
+        catch (e) {
+            throw resolve({ success: false, message: 'System ' + e, data: arryEmpty });
+
+        }
+    });
+},
 //update item
 funUpdateItem: UpdateItem = (obj, db) => {
     console.log("funUpdateditems ---", obj)
@@ -449,32 +475,42 @@ funUpdateItem: UpdateItem = (obj, db) => {
     });
 
 },
-
-funItem: Item = (obj, db) => {
-    console.log("funUpdateItem ---", obj)
+//update net
+funUpdateNet:UpdateNet = (obj, db) => {
+    console.log("funUpdateditems ---", obj)
     return new Promise((resolve, reject) => {
         try {
-            console.log("funUpdateItem ---")
-            const newObject = {
-                semester: obj.semester,
-                subject: obj.subject,
-            }
 
-            db.collection(config.UPDATE_ITEM_COLLECTION).updateOne(query, { $set: newObject }, (err, doc) => {
-                if (err) resolve({ success: false, message: ' Update Failed.', data: arryEmpty });
-                else {
-                    resolve({ success: true, message: 'updated successfully', data: [doc] });
+            let intNetId = obj._id;    
+
+            var match = { $match: { _id: ObjectID(intNetId) } };
+            db.collection(config.NET_COLLECTION).aggregate([match, strQryCount]).toArray().then((response) => {
+                if (response.length) {
+                    const newObject = {
+                        material: obj.material,
+                        questionPaper: obj.questionPaper,
+                        videoLink:obj.videoLink,
+
+                    };
+                    var query = { _id: ObjectID(intNetId) };
+                    db.collection(config.NET_COLLECTION).updateOne(query, { $set: newObject }, (err, doc) => {
+                        if (err) resolve({ success: false, message: 'item Update Failed.', data: arryEmpty });
+                        else {
+                            resolve({ success: true, message: 'item updated successfully', data: newObject });
+                        }
+
+                    })
+
+                } else {
+                    resolve({ success: false, message: 'No course found', data: arryEmpty });
                 }
-
             });
 
-        }
-
-        catch (e) {
+        } catch (e) {
             throw resolve({ success: false, message: 'System ' + e, data: arryEmpty });
-
         }
     });
+
 },
 //update question
 funupdateQuestion: updateQuestion = (obj, db) => {
@@ -513,7 +549,7 @@ funupdateQuestion: updateQuestion = (obj, db) => {
     });
 
 },
-
+//update_question collection
 funQuestion: Question = (obj, db) => {
     console.log("funQuestion ---", obj)
     return new Promise((resolve, reject) => {
@@ -541,5 +577,159 @@ funQuestion: Question = (obj, db) => {
         }
     });
 },
+//delete course
+funDeleteCourseDetails:deleteCourseDetails = (obj, db) => {
+    return new Promise((resolve, reject) => {
+        try {
 
-}
+            let intCourseId = obj._id;
+
+            var match = { $match: { _id: ObjectID(intCourseId) } };
+            db.collection(config.COURSE_COLLECTION).aggregate([match, strQryCount]).toArray().then((response) => {
+                if (response.length) {
+                    const newObject = {
+              
+                        strStatus: 'D',
+                    };
+                    var query = { _id: ObjectID(intCourseId) };
+                    db.collection(config.COURSE_COLLECTION).update(query, { $set: newObject }, (err) => {
+                        if (err) throw err
+
+                        resolve({ success: true, message: 'course deleted successfully.', data: [newObject] });
+                    })
+                } else {
+                    resolve({ success: false, message: 'course not found', data: arryEmpty });
+                }
+            });
+
+        } catch (e) {
+            throw resolve({ success: false, message: 'System ' + e, data: arryEmpty });
+        }
+
+    });
+},
+//delete item
+funDeleteItemDetails:deleteItemDetails = (obj, db) => {
+    return new Promise((resolve, reject) => {
+        try {
+
+            let intItemId = obj._id;
+
+            var match = { $match: { _id: ObjectID(intItemId) } };
+            db.collection(config.ITEM_COLLECTION).aggregate([match, strQryCount]).toArray().then((response) => {
+                if (response.length) {
+                    const newObject = {
+              
+                        strStatus: 'D',
+                    };
+                    var query = { _id: ObjectID(intItemId) };
+                    db.collection(config.ITEM_COLLECTION).update(query, { $set: newObject }, (err) => {
+                        if (err) throw err
+
+                        resolve({ success: true, message: 'item deleted successfully.', data: [newObject] });
+                    })
+                } else {
+                    resolve({ success: false, message: 'item not found', data: arryEmpty });
+                }
+            });
+
+        } catch (e) {
+            throw resolve({ success: false, message: 'System ' + e, data: arryEmpty });
+        }
+
+    });
+},
+//delete material
+funDeletematerialDetails:deletematerialDetails = (obj, db) => {
+    return new Promise((resolve, reject) => {
+        try {
+
+            let intmaterialId = obj._id;
+
+            var match = { $match: { _id: ObjectID(intmaterialId) } };
+            db.collection(config.MATERIAL_COLLECTION).aggregate([match, strQryCount]).toArray().then((response) => {
+                if (response.length) {
+                    const newObject = {
+              
+                        strStatus: 'D',
+                    };
+                    var query = { _id: ObjectID(intmaterialId) };
+                    db.collection(config.MATERIAL_COLLECTION).update(query, { $set: newObject }, (err) => {
+                        if (err) throw err
+
+                        resolve({ success: true, message: 'material deleted successfully.', data: [newObject] });
+                    })
+                } else {
+                    resolve({ success: false, message: 'material not found', data: arryEmpty });
+                }
+            });
+
+        } catch (e) {
+            throw resolve({ success: false, message: 'System ' + e, data: arryEmpty });
+        }
+
+    });
+},
+//delete question
+funDeletequestionDetails:DeletequestionDetails = (obj, db) => {
+    return new Promise((resolve, reject) => {
+        try {
+
+            let IntquestionId = obj._id;
+
+            var match = { $match: { _id: ObjectID(IntquestionId) } };
+            db.collection(config.QUESTION_COLLECTION).aggregate([match, strQryCount]).toArray().then((response) => {
+                if (response.length) {
+                    const newObject = {
+              
+                        strStatus: 'D',
+                    };
+                    var query = { _id: ObjectID(IntquestionId) };
+                    db.collection(config.QUESTION_COLLECTION).update(query, { $set: newObject }, (err) => {
+                        if (err) throw err
+
+                        resolve({ success: true, message: 'material deleted successfully.', data: [newObject] });
+                    })
+                } else {
+                    resolve({ success: false, message: 'material not found', data: arryEmpty });
+                }
+            });
+
+        } catch (e) {
+            throw resolve({ success: false, message: 'System ' + e, data: arryEmpty });
+        }
+
+    });
+},
+//delete net
+funDeleteNetDetails:DeleteNetDetails = (obj, db) => {
+    return new Promise((resolve, reject) => {
+        try {
+
+            let intNetId = obj._id;
+
+            var match = { $match: { _id: ObjectID(intNetId) } };
+            db.collection(config.NET_COLLECTION).aggregate([match, strQryCount]).toArray().then((response) => {
+                if (response.length) {
+                    const newObject = {
+              
+                        strStatus: 'D',
+                    };
+                    var query = { _id: ObjectID(intNetId) };
+                    db.collection(config.NET_COLLECTION).update(query, { $set: newObject }, (err) => {
+                        if (err) throw err
+
+                        resolve({ success: true, message: 'item deleted successfully.', data: [newObject] });
+                    })
+                } else {
+                    resolve({ success: false, message: 'item not found', data: arryEmpty });
+                }
+            });
+
+        } catch (e) {
+            throw resolve({ success: false, message: 'System ' + e, data: arryEmpty });
+        }
+
+    });
+},
+};

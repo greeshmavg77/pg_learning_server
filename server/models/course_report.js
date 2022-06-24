@@ -94,7 +94,7 @@ module.exports = {
         intPageLimit = parseInt(obj.intPageLimit);
         var Project = {
           $project: {
-            id:"$_id",
+            _id:"$_id",
             semester: "$semester",
             description: "$description",
             // category:"$category",
@@ -247,6 +247,7 @@ funGetMaterialList: GetMaterialList = (obj, db) => {
   });
 
 },
+
 //NETlist
 funGetNetList: GetNetList = (obj, db) => {
   console.log("getlist ====", obj)
@@ -363,7 +364,7 @@ funGetItemList: GetItemList = (obj, db) => {
     });
 
 },  
-//get list by id
+//get list by id-subcategory
 GetListById: ListById = (obj, db) => {
   console.log("getlist ====", obj)
   return new Promise((resolve, reject) => {
@@ -401,6 +402,185 @@ GetListById: ListById = (obj, db) => {
             if (!intPageLimit)
               intPageLimit = parseInt(totalPageCount);
             db.collection(config.COURSE_COLLECTION).aggregate([{ $match: query },
+            { $sort: { datCreateDateAndTime: -1 } },
+            { "$skip": intSkipCount }, { "$limit": intPageLimit },
+              Project
+            ]).toArray((err, doc) => {
+              console.log("doc ====", doc)
+              if (err) throw err;
+              if (doc) {
+                var objTotal = { intTotalCount: totalPageCount };
+                            arrayAllObjData.push(doc);
+                            arrayAllObjData.push(objTotal);
+                resolve({ success: true, message: 'Successfully.', data: doc });
+              }
+
+            });
+          } else {
+            resolve({ success: false, message: ' No Data Found', data: arryEmpty });
+          }
+        })
+
+    } catch (e) {
+      throw resolve({ success: false, message: 'System ' + e, data: arryEmpty });
+    }
+  });
+
+},
+//get list material
+GetListMaterial: ListById = (obj, db) => {
+  console.log("getlist ====", obj)
+  return new Promise((resolve, reject) => {
+    try {
+      var arrayAllObjData = [];
+      var query = { strStatus: "N" };
+      
+      if (obj.semester)
+      query.semester = obj.semester
+
+      if (obj.subject)
+      query.subject = obj.subject
+
+
+      var intSkipCount = 0;
+      var intPageLimit = 0;
+      if (obj.intSkipCount)
+      intSkipCount = parseInt(obj.intSkipCount);
+      if (obj.intPageLimit)
+      intPageLimit = parseInt(obj.intPageLimit);
+      var Project = {
+        $project: {
+          id:"$_id",
+          semester: "$semester",
+          subject: "$subject",
+        }
+      };
+      db.collection(config.MATERIAL_COLLECTION).find(query).count()
+        .then((totalPageCount) => {
+          if (totalPageCount) {
+            if (!intPageLimit)
+              intPageLimit = parseInt(totalPageCount);
+            db.collection(config.MATERIAL_COLLECTION).aggregate([{ $match: query },
+            { $sort: { datCreateDateAndTime: -1 } },
+            { "$skip": intSkipCount }, { "$limit": intPageLimit },
+              Project
+            ]).toArray((err, doc) => {
+              console.log("doc ====", doc)
+              if (err) throw err;
+              if (doc) {
+                var objTotal = { intTotalCount: totalPageCount };
+                            arrayAllObjData.push(doc);
+                            arrayAllObjData.push(objTotal);
+                resolve({ success: true, message: 'Successfully.', data: doc });
+              }
+
+            });
+          } else {
+            resolve({ success: false, message: ' No Data Found', data: arryEmpty });
+          }
+        })
+
+    } catch (e) {
+      throw resolve({ success: false, message: 'System ' + e, data: arryEmpty });
+    }
+  });
+
+},
+//get list id question papers
+GetLisIdquestionPapers: ListById = (obj, db) => {
+  console.log("getlist ====", obj)
+  return new Promise((resolve, reject) => {
+    try {
+      var arrayAllObjData = [];
+      var query = { strStatus: "N" };
+      if (obj.subject)
+        query.subject = obj.subject
+
+        if (obj.year)
+        query.year = obj.year
+
+        if (obj.pdf)
+        query.pdf = obj.pdf
+
+
+      var intSkipCount = 0;
+      var intPageLimit = 0;
+      if (obj.intSkipCount)
+      intSkipCount = parseInt(obj.intSkipCount);
+      if (obj.intPageLimit)
+      intPageLimit = parseInt(obj.intPageLimit);
+      var Project = {
+        $project: {
+          id:"$_id",
+          subject: "$subject",
+          year: "$year",
+          pdf: "$pdf",
+        }
+      };
+      db.collection(config.QUESTION_COLLECTION).find(query).count()
+        .then((totalPageCount) => {
+          if (totalPageCount) {
+            if (!intPageLimit)
+              intPageLimit = parseInt(totalPageCount);
+            db.collection(config.QUESTION_COLLECTION).aggregate([{ $match: query },
+            { $sort: { datCreateDateAndTime: -1 } },
+            { "$skip": intSkipCount }, { "$limit": intPageLimit },
+              Project
+            ]).toArray((err, doc) => {
+              console.log("doc ====", doc)
+              if (err) throw err;
+              if (doc) {
+                var objTotal = { intTotalCount: totalPageCount };
+                            arrayAllObjData.push(doc);
+                            arrayAllObjData.push(objTotal);
+                resolve({ success: true, message: 'Successfully.', data: doc });
+              }
+
+            });
+          } else {
+            resolve({ success: false, message: ' No Data Found', data: arryEmpty });
+          }
+        })
+
+    } catch (e) {
+      throw resolve({ success: false, message: 'System ' + e, data: arryEmpty });
+    }
+  });
+
+},
+//get by id net
+funGetListIdNet: ListById = (obj, db) => {
+  console.log("getlist ====", obj)
+  return new Promise((resolve, reject) => {
+    try {
+      var arrayAllObjData = [];
+      var query = { strStatus: "N" };
+      if (obj.material)
+      query.material = obj.material
+
+      if (obj.questionPaper)
+      query.questionPaper = obj.questionPaper
+
+
+      var intSkipCount = 0;
+      var intPageLimit = 0;
+      if (obj.intSkipCount)
+      intSkipCount = parseInt(obj.intSkipCount);
+      if (obj.intPageLimit)
+      intPageLimit = parseInt(obj.intPageLimit);
+      var Project = {
+        $project: {
+          id:"$_id",
+          material: "$material",
+          questionPaper: "$questionPaper",
+        }
+      };
+      db.collection(config.NET_COLLECTION).find(query).count()
+        .then((totalPageCount) => {
+          if (totalPageCount) {
+            if (!intPageLimit)
+              intPageLimit = parseInt(totalPageCount);
+            db.collection(config.NET_COLLECTION).aggregate([{ $match: query },
             { $sort: { datCreateDateAndTime: -1 } },
             { "$skip": intSkipCount }, { "$limit": intPageLimit },
               Project

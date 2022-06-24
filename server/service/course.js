@@ -107,6 +107,28 @@ app.post('/api/material/getMaterialList',  (req, res) => {
   
   
   });
+//studymaterialupdate
+app.post('/api/course/Updatestudymaterial', (req,res) => {
+    try{
+        var obj = req.body;
+        var strActionType ="UPDATE";
+        if(!obj) {
+            res.json({success: false, message: 'Parameter missing',data:arryEmpty});
+        } else {
+                    COURSEMODELS.funUpdatestudymaterial(obj,db).then(( result )=>{
+                        if(result && result.success === true) {
+                            res.status(200).json(result)
+                        } else {
+                            res.status(200).json(result)
+                        }
+                    });
+        }
+    }catch (e) {
+        console.log("Error",e);
+        res.status(500).json({success: false, message: "Error:"+e, data:arryEmpty});
+    }
+
+});
 //item save
 app.post('/api/course/Item', (req, res) => {
   console.log("added ==---", req.body)
@@ -315,7 +337,7 @@ app.post('/api/course/subcategoryList',(req, res) => {
   
   });
 //update item
-app.post('/api/booking/UpdateItem', (req,res) => {
+app.post('/api/course/UpdateItem', (req,res) => {
     try{
         var obj = req.body;
         var strActionType ="UPDATE";
@@ -337,7 +359,7 @@ app.post('/api/booking/UpdateItem', (req,res) => {
 
 });
 //update question
-app.post('/api/booking/updateQuestion', (req,res) => {
+app.post('/api/course/updateQuestion', (req,res) => {
     try{
         var obj = req.body;
         var strActionType ="UPDATE";
@@ -345,6 +367,28 @@ app.post('/api/booking/updateQuestion', (req,res) => {
             res.json({success: false, message: 'Parameter missing',data:arryEmpty});
         } else {
                     COURSEMODELS.funupdateQuestion(obj,db).then(( result )=>{
+                        if(result && result.success === true) {
+                            res.status(200).json(result)
+                        } else {
+                            res.status(200).json(result)
+                        }
+                    });
+        }
+    }catch (e) {
+        console.log("Error",e);
+        res.status(500).json({success: false, message: "Error:"+e, data:arryEmpty});
+    }
+
+});
+//update net
+app.post('/api/course/UpdateNet', (req,res) => {
+    try{
+        var obj = req.body;
+        var strActionType ="UPDATE";
+        if(!obj) {
+            res.json({success: false, message: 'Parameter missing',data:arryEmpty});
+        } else {
+                    COURSEMODELS.funUpdateNet(obj,db).then(( result )=>{
                         if(result && result.success === true) {
                             res.status(200).json(result)
                         } else {
@@ -416,7 +460,94 @@ app.post('/api/course/DeleteItemDetails',(req,res) => {
     }
 
 }); 
-//get list by Id
+//delete material
+app.post('/api/course/DeletematerialDetails',(req,res) => {
+    try{
+        var obj = req.body;
+        var strActionType ="UPDATE";
+        if(!obj) {
+            res.json({success: false, message: 'Parameter missing',data:arryEmpty});
+        } else {
+            // COURSEMODELS.funBookingValidateDeleteDetails(strActionType,req,db).then(( result )=>{
+            //     if(result && result.success === true) {
+                    COURSEMODELS.funDeletematerialDetails(obj,db).then(( result )=>{
+                        if(result && result.success === true) {
+                            res.status(200).json(result)
+                        }
+                        else {
+                            res.status(200).json(result)
+                        }
+                    });
+            //   } else {
+            //         res.status(200).json(result)
+            //     }
+            // });
+        }
+    }catch (e) {
+        console.log("Error",e);
+        res.status(500).json({success: false, message: "Error:"+e, data:arryEmpty});
+    }
+
+}); 
+//delete question
+app.post('/api/course/DeletequestionDetails',(req,res) => {
+    try{
+        var obj = req.body;
+        var strActionType ="UPDATE";
+        if(!obj) {
+            res.json({success: false, message: 'Parameter missing',data:arryEmpty});
+        } else {
+            // COURSEMODELS.funBookingValidateDeleteDetails(strActionType,req,db).then(( result )=>{
+            //     if(result && result.success === true) {
+                    COURSEMODELS.funDeletequestionDetails(obj,db).then(( result )=>{
+                        if(result && result.success === true) {
+                            res.status(200).json(result)
+                        }
+                        else {
+                            res.status(200).json(result)
+                        }
+                    });
+            //   } else {
+            //         res.status(200).json(result)
+            //     }
+            // });
+        }
+    }catch (e) {
+        console.log("Error",e);
+        res.status(500).json({success: false, message: "Error:"+e, data:arryEmpty});
+    }
+
+}); 
+//delete net
+app.post('/api/course/DeleteNetDetails',(req,res) => {
+    try{
+        var obj = req.body;
+        var strActionType ="UPDATE";
+        if(!obj) {
+            res.json({success: false, message: 'Parameter missing',data:arryEmpty});
+        } else {
+            // COURSEMODELS.funBookingValidateDeleteDetails(strActionType,req,db).then(( result )=>{
+            //     if(result && result.success === true) {
+                    COURSEMODELS.funDeleteNetDetails(obj,db).then(( result )=>{
+                        if(result && result.success === true) {
+                            res.status(200).json(result)
+                        }
+                        else {
+                            res.status(200).json(result)
+                        }
+                    });
+            //   } else {
+            //         res.status(200).json(result)
+            //     }
+            // });
+        }
+    }catch (e) {
+        console.log("Error",e);
+        res.status(500).json({success: false, message: "Error:"+e, data:arryEmpty});
+    }
+
+}); 
+//get list by Id-subcategory
 app.post('/api/course/GetListById',(req,res) => {
     console.log("show her -----",req.body)
     try{
@@ -425,6 +556,69 @@ app.post('/api/course/GetListById',(req,res) => {
             res.json({success: false, message: 'Params missing',data:arryEmpty});
         } else {
             COURSEREPORT.GetListById(obj,db).then(( result )=>{
+                if(result && result.success === true) {
+                    res.status(200).json(result)
+                }else {
+                    res.status(200).json(result)
+                }
+            });
+        }
+    }catch (e) {
+        console.log("Error",e);
+        res.status(500).json({success: false, message: "Error:"+e, data:arryEmpty});
+    }
+});
+//get by Id -material
+app.post('/api/course/GetListMaterial',(req,res) => {
+    console.log("show her -----",req.body)
+    try{
+        var obj = req.body
+        if(!obj){
+            res.json({success: false, message: 'Params missing',data:arryEmpty});
+        } else {
+            COURSEREPORT.GetLisMaterial(obj,db).then(( result )=>{
+                if(result && result.success === true) {
+                    res.status(200).json(result)
+                }else {
+                    res.status(200).json(result)
+                }
+            });
+        }
+    }catch (e) {
+        console.log("Error",e);
+        res.status(500).json({success: false, message: "Error:"+e, data:arryEmpty});
+    }
+});
+//get by Id questionpapers
+app.post('/api/course/GetListIdquestionPapers',(req,res) => {
+    console.log("show her -----",req.body)
+    try{
+        var obj = req.body
+        if(!obj){
+            res.json({success: false, message: 'Params missing',data:arryEmpty});
+        } else {
+            COURSEREPORT.GetLisIdquestionPapers(obj,db).then(( result )=>{
+                if(result && result.success === true) {
+                    res.status(200).json(result)
+                }else {
+                    res.status(200).json(result)
+                }
+            });
+        }
+    }catch (e) {
+        console.log("Error",e);
+        res.status(500).json({success: false, message: "Error:"+e, data:arryEmpty});
+    }
+});
+//get by id net
+app.post('/api/course/GetListIdNet',(req,res) => {
+    console.log("show her -----",req.body)
+    try{
+        var obj = req.body
+        if(!obj){
+            res.json({success: false, message: 'Params missing',data:arryEmpty});
+        } else {
+            COURSEREPORT.funGetListIdNet(obj,db).then(( result )=>{
                 if(result && result.success === true) {
                     res.status(200).json(result)
                 }else {
