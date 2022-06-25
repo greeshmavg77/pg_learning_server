@@ -414,30 +414,39 @@ funSubject: Subject = (obj, db) => {
 //update material
 
 funUpdatestudymaterial: Updatestudymaterial = (obj, db) => {
-    console.log("funUpdatestudymaterialDetails ---", obj)
+    console.log("funUpdateditems ---", obj)
     return new Promise((resolve, reject) => {
         try {
-            const newObject = {
 
-                semester: obj.semester,
-                subject: obj.subject
-            }
+            let IntmaterialId = obj._id;    
 
-            db.collection(config.MATERIAL_COLLECTION).updateOne(query, { $set: newObject }, (err, doc) => {
-                if (err) resolve({ success: false, message: ' Update Failed.', data: arryEmpty });
-                else {
-                    resolve({ success: true, message: 'updated successfully', data: [doc] });
+            var match = { $match: { _id: ObjectID(IntmaterialId) } };
+            db.collection(config.MATERIAL_COLLECTION).aggregate([match, strQryCount]).toArray().then((response) => {
+                if (response.length) {
+                    const newObject = {
+                        semester: obj.semester,
+                        subject: obj.subject
+
+                    };
+                    var query = { _id: ObjectID(IntmaterialId) };
+                    db.collection(config.MATERIAL_COLLECTION).updateOne(query, { $set: newObject }, (err, doc) => {
+                        if (err) resolve({ success: false, message: 'item Update Failed.', data: arryEmpty });
+                        else {
+                            resolve({ success: true, message: 'item updated successfully', data: newObject });
+                        }
+
+                    })
+
+                } else {
+                    resolve({ success: false, message: 'No course found', data: arryEmpty });
                 }
-
             });
 
-        }
-
-        catch (e) {
+        } catch (e) {
             throw resolve({ success: false, message: 'System ' + e, data: arryEmpty });
-
         }
     });
+
 },
 //update item
 funUpdateItem: UpdateItem = (obj, db) => {
@@ -644,16 +653,16 @@ funDeletematerialDetails:deletematerialDetails = (obj, db) => {
     return new Promise((resolve, reject) => {
         try {
 
-            let intmaterialId = obj._id;
+            let IntmaterialId= obj._id;
 
-            var match = { $match: { _id: ObjectID(intmaterialId) } };
+            var match = { $match: { _id: ObjectID(IntmaterialId) } };
             db.collection(config.MATERIAL_COLLECTION).aggregate([match, strQryCount]).toArray().then((response) => {
                 if (response.length) {
                     const newObject = {
               
                         strStatus: 'D',
                     };
-                    var query = { _id: ObjectID(intmaterialId) };
+                    var query = { _id: ObjectID(IntmaterialId) };
                     db.collection(config.MATERIAL_COLLECTION).update(query, { $set: newObject }, (err) => {
                         if (err) throw err
 

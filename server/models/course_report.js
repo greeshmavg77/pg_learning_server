@@ -15,11 +15,17 @@ module.exports = {
         if (obj.subject)
         query.subject = obj.subject
 
-        if (obj.year)
-        query.year = obj.year
+        if (obj.year_1)
+        query.year_1 = obj.year_1
 
-        if (obj.pdf)
-        query.pdf = obj.pdf
+        if (obj.year_2)
+        query.year_2= obj.year_2
+
+        if (obj.year_3)
+        query.year_3 = obj.year_3
+
+        // if (obj.pdf)
+        // query.pdf = obj.pdf
 
         var intSkipCount = 0;
         var intPageLimit = 0;
@@ -31,41 +37,41 @@ module.exports = {
           $project: {
            
             subject:"$subject",
-            year:"$year",
-            pdf:"$pdf",
+            year_1:"$year_1",
+            year_2:"$year_2",
+            year_3:"$year_3",
+
 
           }
         };
         db.collection(config.QUESTION_COLLECTION).find(query).count()
-          .then((totalPageCount) => {
-            if (totalPageCount) {
-              if (!intPageLimit)
-                intPageLimit = parseInt(totalPageCount);
-              db.collection(config.QUESTION_COLLECTION).aggregate([{ $match: query },
-              { $sort: { datCreateDateAndTime: -1 } },
-              { "$skip": intSkipCount }, { "$limit": intPageLimit },
-                Project
-              ]).toArray((err, doc) => {
-                console.log("doc ====", doc)
-                if (err) throw err;
-                if (doc) {
-                  var objTotal = { intTotalCount: totalPageCount };
+                .then((totalPageCount) => {
+                    if (totalPageCount) {
+                        if (!intPageLimit)
+                            intPageLimit = parseInt(totalPageCount);
+                        db.collection(config.QUESTION_COLLECTION).aggregate([{ $match: query },
+                        { $sort: { datCreateDateAndTime: -1 } },
+                        { "$skip": intSkipCount }, { "$limit": intPageLimit },
+                            Project
+                        ]).toArray((err, doc) => {
+                            if (err) throw err;
+                            if (doc) {
+                              var objTotal = { intTotalCount: totalPageCount };
                               arrayAllObjData.push(doc);
                               arrayAllObjData.push(objTotal);
-                  resolve({ success: true, message: 'Successfully.', data: doc });
-                }
-  
-              });
-            } else {
-              resolve({ success: false, message: ' No Data Found', data: arryEmpty });
-            }
-          })
-  
-      } catch (e) {
-        throw resolve({ success: false, message: 'System ' + e, data: arryEmpty });
-      }
+                                resolve({ success: true, message: 'Successfully.', data: doc});
+                            }
+
+                        });
+                    } else {
+                        resolve({ success: false, message: ' No Data Found', data: arryEmpty });
+                    }
+                })
+
+        } catch (e) {
+            throw resolve({ success: false, message: 'System ' + e, data: arryEmpty });
+        }
     });
-  
   },
 
 //courselist
@@ -197,11 +203,12 @@ funGetMaterialList: GetMaterialList = (obj, db) => {
       var arrayAllObjData = [];
       var query = { strStatus: "N" };
       
+      if (obj.subject)
+      query.subject = obj.subject
+
       if (obj.semester)
       query.semester = obj.semester
 
-      if (obj.subject)
-      query.subject = obj.subject
 
       var intSkipCount = 0;
       var intPageLimit = 0;
@@ -212,8 +219,8 @@ funGetMaterialList: GetMaterialList = (obj, db) => {
       var Project = {
         $project: {
           id:"$_id",
-          semester: "$semester",
-          subject:"$subject"
+          subject:"$subject",
+          semester:"$semester",
         }
       };
       db.collection(config.MATERIAL_COLLECTION).find(query).count()
