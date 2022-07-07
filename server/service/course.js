@@ -174,7 +174,7 @@ app.post('/api/course/ItemList',(req,res) => {
         res.status(500).json({success: false, message: "Error:"+e, data:arryEmpty});
     }
 });
-//itemgetlist
+//Itemlist
 app.post('/api/course/GetItemList',(req,res) => {
     console.log("show her -----",req.body)
     try{
@@ -619,6 +619,27 @@ app.post('/api/course/GetListIdNet',(req,res) => {
             res.json({success: false, message: 'Params missing',data:arryEmpty});
         } else {
             COURSEREPORT.funGetListIdNet(obj,db).then(( result )=>{
+                if(result && result.success === true) {
+                    res.status(200).json(result)
+                }else {
+                    res.status(200).json(result)
+                }
+            });
+        }
+    }catch (e) {
+        console.log("Error",e);
+        res.status(500).json({success: false, message: "Error:"+e, data:arryEmpty});
+    }
+});
+//get by id item
+app.post('/api/course/GetListIdItem',(req,res) => {
+    console.log("show her -----",req.body)
+    try{
+        var obj = req.body
+        if(!obj){
+            res.json({success: false, message: 'Params missing',data:arryEmpty});
+        } else {
+            COURSEREPORT.funGetListIdItem(obj,db).then(( result )=>{
                 if(result && result.success === true) {
                     res.status(200).json(result)
                 }else {

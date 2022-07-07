@@ -59,7 +59,7 @@ module.exports = {
                               var objTotal = { intTotalCount: totalPageCount };
                               arrayAllObjData.push(doc);
                               arrayAllObjData.push(objTotal);
-                                resolve({ success: true, message: 'Successfully.', data: doc});
+                                resolve({ success: true, message: 'Successfully.', data: arrayAllObjData});
                             }
 
                         });
@@ -122,7 +122,7 @@ module.exports = {
                   var objTotal = { intTotalCount: totalPageCount };
                               arrayAllObjData.push(doc);
                               arrayAllObjData.push(objTotal);
-                  resolve({ success: true, message: 'Successfully.', data: doc });
+                  resolve({ success: true, message: 'Successfully.', data: arrayAllObjData });
                 }
 
               });
@@ -239,7 +239,7 @@ funGetMaterialList: GetMaterialList = (obj, db) => {
                 var objTotal = { intTotalCount: totalPageCount };
                             arrayAllObjData.push(doc);
                             arrayAllObjData.push(objTotal);
-                resolve({ success: true, message: 'Successfully.', data: doc });
+                resolve({ success: true, message: 'Successfully.', data: arrayAllObjData });
               }
 
             });
@@ -298,7 +298,7 @@ funGetNetList: GetNetList = (obj, db) => {
                 var objTotal = { intTotalCount: totalPageCount };
                             arrayAllObjData.push(doc);
                             arrayAllObjData.push(objTotal);
-                resolve({ success: true, message: 'Successfully.', data: doc });
+                resolve({ success: true, message: 'Successfully.', data: arrayAllObjData });
               }
 
             });
@@ -356,7 +356,7 @@ funGetItemList: GetItemList = (obj, db) => {
                               var objTotal = { intTotalCount: totalPageCount };
                               arrayAllObjData.push(doc);
                               arrayAllObjData.push(objTotal);
-                                resolve({ success: true, message: 'Successfully.', data: doc});
+                                resolve({ success: true, message: 'Successfully.', data: arrayAllObjData});
                             }
 
                         });
@@ -588,6 +588,63 @@ funGetListIdNet: ListById = (obj, db) => {
             if (!intPageLimit)
               intPageLimit = parseInt(totalPageCount);
             db.collection(config.NET_COLLECTION).aggregate([{ $match: query },
+            { $sort: { datCreateDateAndTime: -1 } },
+            { "$skip": intSkipCount }, { "$limit": intPageLimit },
+              Project
+            ]).toArray((err, doc) => {
+              console.log("doc ====", doc)
+              if (err) throw err;
+              if (doc) {
+                var objTotal = { intTotalCount: totalPageCount };
+                            arrayAllObjData.push(doc);
+                            arrayAllObjData.push(objTotal);
+                resolve({ success: true, message: 'Successfully.', data: doc });
+              }
+
+            });
+          } else {
+            resolve({ success: false, message: ' No Data Found', data: arryEmpty });
+          }
+        })
+
+    } catch (e) {
+      throw resolve({ success: false, message: 'System ' + e, data: arryEmpty });
+    }
+  });
+
+},
+//get by id net
+funGetListIdItem: ListById = (obj, db) => {
+  console.log("getlist ====", obj)
+  return new Promise((resolve, reject) => {
+    try {
+      var arrayAllObjData = [];
+      var query = { strStatus: "N" };
+      if (obj.fieldName)
+      query.fieldName = obj.fieldName
+
+      if (obj.description)
+      query.description = obj.description
+
+      var intSkipCount = 0;
+      var intPageLimit = 0;
+      if (obj.intSkipCount)
+      intSkipCount = parseInt(obj.intSkipCount);
+      if (obj.intPageLimit)
+      intPageLimit = parseInt(obj.intPageLimit);
+      var Project = {
+        $project: {
+          id:"$_id",
+          fieldName: "$fieldName",
+          description: "$description",
+        }
+      };
+      db.collection(config.ITEM_COLLECTION).find(query).count()
+        .then((totalPageCount) => {
+          if (totalPageCount) {
+            if (!intPageLimit)
+              intPageLimit = parseInt(totalPageCount);
+            db.collection(config.ITEM_COLLECTION).aggregate([{ $match: query },
             { $sort: { datCreateDateAndTime: -1 } },
             { "$skip": intSkipCount }, { "$limit": intPageLimit },
               Project

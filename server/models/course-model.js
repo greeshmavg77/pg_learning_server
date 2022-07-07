@@ -650,6 +650,7 @@ funDeleteItemDetails:deleteItemDetails = (obj, db) => {
 },
 //delete material
 funDeletematerialDetails:deletematerialDetails = (obj, db) => {
+    console.log("funDeletematerialDetails",obj)
     return new Promise((resolve, reject) => {
         try {
 
