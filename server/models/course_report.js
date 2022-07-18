@@ -88,8 +88,8 @@ module.exports = {
         if (obj.semester)
         query.semester = obj.semester
 
-        if (obj.description)
-        query.description = obj.description
+        // if (obj.description)
+        // query.description = obj.description
         
 
         var intSkipCount = 0;
@@ -102,8 +102,8 @@ module.exports = {
           $project: {
             _id:"$_id",
             semester: "$semester",
-            description: "$description",
-            // category:"$category",
+            // description: "$description",
+           
           }
         };
         db.collection(config.COURSE_COLLECTION).find(query).count()
@@ -268,6 +268,9 @@ funGetNetList: GetNetList = (obj, db) => {
 
       if (obj.questionPaper)
       query.questionPaper = obj.questionPaper
+      
+      if (obj.videoLink)
+      query.videoLink = obj.videoLink
 
       var intSkipCount = 0;
       var intPageLimit = 0;
@@ -280,6 +283,7 @@ funGetNetList: GetNetList = (obj, db) => {
           id:"$_id",
           material: "$material",
           questionPaper: "$questionPaper",
+          videoLink: "$videoLink",
         }
       };
       db.collection(config.NET_COLLECTION).find(query).count()
@@ -322,11 +326,11 @@ funGetItemList: GetItemList = (obj, db) => {
             var arrayAllObjData = [];
             var query = { strStatus: "N" };
             
-            if (obj.fieldName)
-            query.fieldName = obj.fieldName
+            // if (obj.fieldName)
+            // query.fieldName = obj.fieldName
 
-            if (obj. description)
-            query. description = obj. description
+            // if (obj. description)
+            // query. description = obj. description
 
             var intSkipCount = 0;
             var intPageLimit = 0;
@@ -377,16 +381,7 @@ GetListById: ListById = (obj, db) => {
   return new Promise((resolve, reject) => {
     try {
       var arrayAllObjData = [];
-      var query = { strStatus: "N" };
-
-      // if (obj.category)
-      // query.category = obj.category
-      
-      if (obj.semester)
-      query.semester = obj.semester
-
-      if (obj.description)
-      query.description = obj.description
+      var query = {  _id : ObjectID(obj.id), strStatus: "N" };
       
 
       var intSkipCount = 0;
@@ -440,13 +435,13 @@ GetListMaterial: ListById = (obj, db) => {
   return new Promise((resolve, reject) => {
     try {
       var arrayAllObjData = [];
-      var query = { strStatus: "N" };
+      var query = {   _id : ObjectID(obj.id), strStatus: "N" };
       
-      if (obj.semester)
-      query.semester = obj.semester
+      // if (obj.semester)
+      // query.semester = obj.semester
 
-      if (obj.subject)
-      query.subject = obj.subject
+      // if (obj.subject)
+      // query.subject = obj.subject
 
 
       var intSkipCount = 0;
@@ -458,7 +453,7 @@ GetListMaterial: ListById = (obj, db) => {
       var Project = {
         $project: {
           id:"$_id",
-          semester: "$semester",
+          material: "$material",
           subject: "$subject",
         }
       };
@@ -499,15 +494,15 @@ GetLisIdquestionPapers: ListById = (obj, db) => {
   return new Promise((resolve, reject) => {
     try {
       var arrayAllObjData = [];
-      var query = { strStatus: "N" };
-      if (obj.subject)
-        query.subject = obj.subject
+      var query = {  _id : ObjectID(obj.id), strStatus: "N"};
+      // if (obj.subject)
+      //   query.subject = obj.subject
 
-        if (obj.year)
-        query.year = obj.year
+      //   if (obj.year)
+      //   query.year = obj.year
 
-        if (obj.pdf)
-        query.pdf = obj.pdf
+      //   if (obj.pdf)
+      //   query.pdf = obj.pdf
 
 
       var intSkipCount = 0;
@@ -561,12 +556,12 @@ funGetListIdNet: ListById = (obj, db) => {
   return new Promise((resolve, reject) => {
     try {
       var arrayAllObjData = [];
-      var query = { strStatus: "N" };
-      if (obj.material)
-      query.material = obj.material
+      var query = {  _id : ObjectID(obj.id), strStatus: "N"};
+      // if (obj.material)
+      // query.material = obj.material
 
-      if (obj.questionPaper)
-      query.questionPaper = obj.questionPaper
+      // if (obj.questionPaper)
+      // query.questionPaper = obj.questionPaper
 
 
       var intSkipCount = 0;
@@ -619,12 +614,12 @@ funGetListIdItem: ListById = (obj, db) => {
   return new Promise((resolve, reject) => {
     try {
       var arrayAllObjData = [];
-      var query = { strStatus: "N" };
-      if (obj.fieldName)
-      query.fieldName = obj.fieldName
+      var query = {  _id : ObjectID(obj.id), strStatus: "N"};
+      // if (obj.fieldName)
+      // query.fieldName = obj.fieldName
 
-      if (obj.description)
-      query.description = obj.description
+      // if (obj.description)
+      // query.description = obj.description
 
       var intSkipCount = 0;
       var intPageLimit = 0;

@@ -42,6 +42,7 @@ app.post('/api/course/Course', (req, res) => {
 });
 //courselistget
 app.post('/api/course/getCourseList',  (req, res) => {
+    console.log("werr------",res)
     try {
         var obj = req.body
         if (!obj) {
@@ -576,7 +577,7 @@ app.post('/api/course/GetListMaterial',(req,res) => {
         if(!obj){
             res.json({success: false, message: 'Params missing',data:arryEmpty});
         } else {
-            COURSEREPORT.GetLisMaterial(obj,db).then(( result )=>{
+            COURSEREPORT.GetListMaterial(obj,db).then(( result )=>{
                 if(result && result.success === true) {
                     res.status(200).json(result)
                 }else {
