@@ -460,9 +460,9 @@ funUpdateItem: UpdateItem = (obj, db) => {
             db.collection(config.ITEM_COLLECTION).aggregate([match, strQryCount]).toArray().then((response) => {
                 if (response.length) {
                     const newObject = {
-                        semester: obj.semester,
-                        subject: obj.subject
-
+                        fieldName: obj.fieldName,
+                        description: obj. description
+          
                     };
                     var query = { _id: ObjectID(intItemId) };
                     db.collection(config.ITEM_COLLECTION).updateOne(query, { $set: newObject }, (err, doc) => {
@@ -534,9 +534,7 @@ funupdateQuestion: updateQuestion = (obj, db) => {
                 if (response.length) {
                     const newObject = {
                         subject:obj.subject,
-                        year_1:obj.year_1,
-                        year_2:obj.year_2,
-                        year_3:obj.year_3
+                        semester:obj.semester,
                     };
                     var query = { _id: ObjectID(intquestionId) };
                     db.collection(config.QUESTION_COLLECTION).updateOne(query, { $set: newObject }, (err, doc) => {

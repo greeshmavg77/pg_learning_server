@@ -246,7 +246,7 @@ app.post('/api/course/getQuestionList',(req, res) => {
 });
 
 //sucategory update
-app.post('/api/course/sucategoryUpdate', (req,res) => {
+app.post('/api/course/subcategoryUpdate', (req,res) => {
     try{
         var obj = req.body;
         var strActionType ="UPDATE";

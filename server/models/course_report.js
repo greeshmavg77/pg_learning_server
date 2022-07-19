@@ -12,20 +12,11 @@ module.exports = {
         var arrayAllObjData = [];
         var query = { strStatus: "N" };
         
-        if (obj.subject)
-        query.subject = obj.subject
+        if (obj.semester)
+        query.semester = obj.semester
 
-        if (obj.year_1)
-        query.year_1 = obj.year_1
-
-        if (obj.year_2)
-        query.year_2= obj.year_2
-
-        if (obj.year_3)
-        query.year_3 = obj.year_3
-
-        // if (obj.pdf)
-        // query.pdf = obj.pdf
+        if (obj.pdf)
+        query.pdf = obj.pdf
 
         var intSkipCount = 0;
         var intPageLimit = 0;
@@ -37,11 +28,8 @@ module.exports = {
           $project: {
            
             subject:"$subject",
-            year_1:"$year_1",
-            year_2:"$year_2",
-            year_3:"$year_3",
-
-
+            semester:"$semester",
+            
           }
         };
         db.collection(config.QUESTION_COLLECTION).find(query).count()
@@ -88,8 +76,8 @@ module.exports = {
         if (obj.semester)
         query.semester = obj.semester
 
-        // if (obj.description)
-        // query.description = obj.description
+        if (obj.description)
+        query.description = obj.description
         
 
         var intSkipCount = 0;
@@ -102,7 +90,7 @@ module.exports = {
           $project: {
             _id:"$_id",
             semester: "$semester",
-            // description: "$description",
+            description: "$description",
            
           }
         };
@@ -203,13 +191,14 @@ funGetMaterialList: GetMaterialList = (obj, db) => {
       var arrayAllObjData = [];
       var query = { strStatus: "N" };
       
-      if (obj.subject)
-      query.subject = obj.subject
+      
 
       if (obj.semester)
       query.semester = obj.semester
 
-
+      if (obj.subject)
+      query.subject = obj.subject
+      
       var intSkipCount = 0;
       var intPageLimit = 0;
       if (obj.intSkipCount)
@@ -219,8 +208,8 @@ funGetMaterialList: GetMaterialList = (obj, db) => {
       var Project = {
         $project: {
           id:"$_id",
-          subject:"$subject",
           semester:"$semester",
+          subject:"$subject",
         }
       };
       db.collection(config.MATERIAL_COLLECTION).find(query).count()
